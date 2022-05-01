@@ -6,14 +6,11 @@ public class PlayerAnimationController : MonoBehaviour
 {
     [SerializeField] private Animator animator;
 
+    public AnimType CurrentAnim => (AnimType) animator.GetFloat("Speed");
+
     public void SetAnimation(AnimType animType)
     {
         animator.SetFloat("Speed", (float) animType);
-    }
-
-    public void StartRun()
-    {
-        animator.SetTrigger("");
     }
 }
 

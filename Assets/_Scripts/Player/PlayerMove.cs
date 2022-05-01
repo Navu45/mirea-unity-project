@@ -2,20 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem;
-using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerMove : MonoBehaviour
 {
     private NavMeshAgent agent;
-    // Start is called before the first frame update
+    public float speed = 5;
+    public float acceleration = 3;
+
+    public bool IsStopped => agent.hasPath;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        agent.speed = speed;
+        agent.acceleration = acceleration;
     }
 
     public void Move(Vector3 moveVector)
     {
-        agent.Move(moveVector);
+        agent.isStopped = false;
+        agent.SetDestination(transform.position + moveVector);        
     }
+
+    public void Stop()
+    {
+        agent.ResetPath();
+    }
+
 }

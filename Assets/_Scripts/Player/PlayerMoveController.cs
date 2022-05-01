@@ -1,46 +1,62 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerMoveController : MonoBehaviour
 {
     private PlayerMove player;
-    private PlayerAnimationController animationController;
+    private PlayerAnimationController animation;
     private PlayerInput playerInput;
+    private Vector3 input;
+    private Vector3 zero = Vector3.zero;
+
+    IDisposable stopDis;
 
     // Start is called before the first frame update
     void Start()
     {
         player = GetComponent<PlayerMove>();
-        animationController = GetComponent<PlayerAnimationController>();
+        animation = GetComponent<PlayerAnimationController>();
         playerInput = GetComponent<PlayerInput>();
-
-        // Have it run your code when the Action is triggered.
-        playerInput.actions["Move"].performed += (ctx) =>
-        {
-            Move(ctx);
-            animationController.SetAnimation(AnimType.Run);
-        };
-
-        playerInput.actions["Move"].canceled += (ctx) =>
-        {
-            animationController.SetAnimation(AnimType.Idle);
-        };
-
-        // Start listening for control changes.
-        playerInput.actions["Move"].Enable();
     }
 
-    void OnDisable()
+    void Update()
     {
-        playerInput.actions["Move"].Disable();
+        input = playerInput.actions["Move"].ReadValue<Vector2>();
+        if (input != zero)
+        {
+            HandleInput();
+            animation.SetAnimation(AnimType.Run);
+        }
+        else if (stopDis == null && !player.IsStopped)
+        {
+            animation.SetAnimation(AnimType.Idle);
+            stopDis = Observable.Timer(TimeSpan.FromSeconds(1)).Subscribe(_ =>
+            {
+                player.Stop();
+                stopDis.Dispose();
+                stopDis = null;
+            });
+        }
     }
 
-    private void Move(InputAction.CallbackContext ctx)
+    private void HandleInput()
     {
-        player.Move(ctx.ReadValue<Vector2>());
+        input = -ConvertInputToDirection(input);
+        player.Move(input);
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(input), 0.01f);
+    }
+
+    private Vector3 ConvertInputToDirection(Vector3 vector)
+    {
+        Vector3 vec = vector;
+        vec.z = -vector.x;
+        vec.x = vector.y;
+        return vec;
     }
 }
