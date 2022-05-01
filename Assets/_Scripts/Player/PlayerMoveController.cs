@@ -17,7 +17,6 @@ public class PlayerMoveController : MonoBehaviour
 
     IDisposable stopDis;
 
-    // Start is called before the first frame update
     void Start()
     {
         player = GetComponent<PlayerMove>();
@@ -30,12 +29,12 @@ public class PlayerMoveController : MonoBehaviour
         input = playerInput.actions["Move"].ReadValue<Vector2>();
         if (input != zero)
         {
+            input = ConvertInputToDirection(input);
             HandleInput();
-            animation.SetAnimation(AnimType.Run);
         }
         else if (stopDis == null && !player.IsStopped)
         {
-            animation.SetAnimation(AnimType.Idle);
+            animation.SetSpeed(AnimType.Idle);
             stopDis = Observable.Timer(TimeSpan.FromSeconds(1)).Subscribe(_ =>
             {
                 player.Stop();
@@ -47,16 +46,19 @@ public class PlayerMoveController : MonoBehaviour
 
     private void HandleInput()
     {
-        input = -ConvertInputToDirection(input);
+        animation.SetSpeed(AnimType.Run);
+        float angleBefore = transform.eulerAngles.y;
         player.Move(input);
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(input), 0.01f);
+        float angleAfter = transform.eulerAngles.y;
+        animation.Turn(angleAfter - angleBefore);
     }
 
     private Vector3 ConvertInputToDirection(Vector3 vector)
     {
         Vector3 vec = vector;
-        vec.z = -vector.x;
-        vec.x = vector.y;
+        vec.z = vector.y;
+        vec.x = vector.x;
+        vec = Quaternion.AngleAxis(-135, transform.up) * vec;
         return vec;
     }
 }

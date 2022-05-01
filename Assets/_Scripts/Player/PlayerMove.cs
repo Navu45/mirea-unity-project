@@ -21,7 +21,8 @@ public class PlayerMove : MonoBehaviour
     public void Move(Vector3 moveVector)
     {
         agent.isStopped = false;
-        agent.SetDestination(transform.position + moveVector);        
+        agent.destination = transform.position + moveVector;
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(moveVector), speed * Time.deltaTime);
     }
 
     public void Stop()

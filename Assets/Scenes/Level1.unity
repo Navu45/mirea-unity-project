@@ -753,6 +753,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1732266920}
+    - target: {fileID: 6483732478927624880, guid: 944783ceee2de964ab8b24593dff364a, type: 3}
+      propertyPath: acceleration
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 8359069722556802276, guid: 944783ceee2de964ab8b24593dff364a, type: 3}
       propertyPath: m_Name
       value: Player

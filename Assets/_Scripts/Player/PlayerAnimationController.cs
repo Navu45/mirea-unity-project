@@ -8,9 +8,17 @@ public class PlayerAnimationController : MonoBehaviour
 
     public AnimType CurrentAnim => (AnimType) animator.GetFloat("Speed");
 
-    public void SetAnimation(AnimType animType)
+    public void SetSpeed(AnimType animType)
     {
         animator.SetFloat("Speed", (float) animType);
+    }
+
+    public void Turn(float delta)
+    {
+        if (delta != 0.0f)
+        {
+            animator.SetFloat("Turn", delta);
+        }
     }
 }
 
