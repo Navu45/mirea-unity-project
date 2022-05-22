@@ -3,62 +3,75 @@ using System.Collections;
 using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.InputSystem;
-using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerMoveController : MonoBehaviour
 {
-    private PlayerMove player;
-    private PlayerAnimationController animation;
-    private PlayerInput playerInput;
-    private Vector3 input;
-    private Vector3 zero = Vector3.zero;
+    [SerializeField] private Animator animator;
 
-    IDisposable stopDis;
+    private Player player;
+    private float angularSpeed = 2;
+    private IDisposable stopPlayer;
 
     void Start()
     {
-        player = GetComponent<PlayerMove>();
-        animation = GetComponent<PlayerAnimationController>();
-        playerInput = GetComponent<PlayerInput>();
+        player = GetComponent<Player>();
     }
 
-    void Update()
+    public void SetSpeed(AnimType animType)
     {
-        input = playerInput.actions["Move"].ReadValue<Vector2>();
-        if (input != zero)
+        animator.SetFloat("Speed", (float) animType);
+    }
+
+    public void RotateWithAnimation(float value)
+    {
+        animator.SetFloat("Turn", value);
+    }
+
+    private void Update()
+    {
+        TurnPlayerWithAnim();
+        MoveForward();
+        RotateWithVector();
+    }
+
+    private void MoveForward()
+    {
+        if (player.IsInputEmpty() && animator.GetFloat("Speed") != 0)
         {
-            input = ConvertInputToDirection(input);
-            HandleInput();
+            stopPlayer = Observable.Timer(TimeSpan.FromSeconds(0.5f)).Subscribe(_ => SetSpeed(AnimType.Idle));
         }
-        else if (stopDis == null && !player.IsStopped)
+        else if (player.IsMoving() || animator.GetFloat("Speed") != 0 && player.InputVector.x != 0)
         {
-            animation.SetSpeed(AnimType.Idle);
-            stopDis = Observable.Timer(TimeSpan.FromSeconds(1)).Subscribe(_ =>
-            {
-                player.Stop();
-                stopDis.Dispose();
-                stopDis = null;
-            });
+            stopPlayer?.Dispose();
+            SetSpeed(AnimType.Run);
         }
     }
 
-    private void HandleInput()
+    private void RotateWithVector()
     {
-        animation.SetSpeed(AnimType.Run);
-        float angleBefore = transform.eulerAngles.y;
-        player.Move(input);
-        float angleAfter = transform.eulerAngles.y;
-        animation.Turn(angleAfter - angleBefore);
+        if (animator.GetFloat("Speed") == 2 && player.InputVector.x != 0 || player.InputVector.y != 0 && !player.IsTurning180())
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, player.RotationTowards(), angularSpeed * Time.deltaTime);
+        }
     }
 
-    private Vector3 ConvertInputToDirection(Vector3 vector)
+    private void TurnPlayerWithAnim()
     {
-        Vector3 vec = vector;
-        vec.z = vector.y;
-        vec.x = vector.x;
-        vec = Quaternion.AngleAxis(-135, transform.up) * vec;
-        return vec;
+        if (player.InputVector.y != 0 && player.IsTurning180())
+        {
+            RotateWithAnimation(180);
+        }
+        else
+        {
+            RotateWithAnimation(player.InputVector.x * 90);
+        }
     }
+}
+
+public enum AnimType
+{
+    RunToStop = -1,
+    Idle = 0,
+    SlowRun = 1,
+    Run = 2
 }

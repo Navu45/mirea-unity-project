@@ -14,17 +14,25 @@
                     "interactions": ""
                 },
                 {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "47f23158-d6b7-4f76-862b-fada6acb224e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Tap(duration=0.08,pressPoint=0.5)"
+                },
+                {
                     "name": "Rotation",
                     "type": "Value",
-                    "id": "912da54b-a23c-49d7-acab-e2a7ea0da7c4",
+                    "id": "c32cd427-15e5-43da-97db-b3aea2459867",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
                 },
                 {
-                    "name": "Jump",
+                    "name": "RMB",
                     "type": "Button",
-                    "id": "47f23158-d6b7-4f76-862b-fada6acb224e",
+                    "id": "95b78ec3-a58a-4333-bd47-13824fd5e004",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -99,10 +107,21 @@
                 },
                 {
                     "name": "",
-                    "id": "20193475-662e-4e26-bb5f-a28967f80477",
-                    "path": "<Touchscreen>/delta",
+                    "id": "9cf20807-f326-4e11-8e61-048c75110de3",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
-                    "processors": "InvertVector2,NormalizeVector2",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "298fb614-0119-43d8-a291-f4aa40b2ddd3",
+                    "path": "<Touchscreen>/primaryTouch/delta",
+                    "interactions": "",
+                    "processors": "InvertVector2",
                     "groups": "",
                     "action": "Rotation",
                     "isComposite": false,
@@ -110,12 +129,12 @@
                 },
                 {
                     "name": "",
-                    "id": "9cf20807-f326-4e11-8e61-048c75110de3",
-                    "path": "<Gamepad>/rightStickPress",
+                    "id": "795fcdc5-e7f0-4d7b-a886-0e42d2bc4216",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Jump",
+                    "action": "RMB",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
