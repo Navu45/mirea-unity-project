@@ -7,9 +7,9 @@ using UnityEngine;
 public class PlayerMoveController : MonoBehaviour
 {
     [SerializeField] private Animator animator;
+    public float angularSpeed = 2;
 
     private Player player;
-    private float angularSpeed = 2;
     private IDisposable stopPlayer;
 
     void Start()
@@ -38,7 +38,7 @@ public class PlayerMoveController : MonoBehaviour
     {
         if (player.IsInputEmpty() && animator.GetFloat("Speed") != 0)
         {
-            stopPlayer = Observable.Timer(TimeSpan.FromSeconds(0.5f)).Subscribe(_ => SetSpeed(AnimType.Idle));
+            stopPlayer = Observable.Timer(TimeSpan.FromSeconds(0.1f)).Subscribe(_ => SetSpeed(AnimType.Idle));
         }
         else if (player.IsMoving() || animator.GetFloat("Speed") != 0 && player.InputVector.x != 0)
         {
@@ -49,7 +49,7 @@ public class PlayerMoveController : MonoBehaviour
 
     private void RotateWithVector()
     {
-        if (animator.GetFloat("Speed") == 2 && player.InputVector.x != 0 || player.InputVector.y != 0 && !player.IsTurning180())
+        if (animator.GetFloat("Speed") == 2 && player.InputVector.x != 0 || !player.IsInputEmpty() && !player.IsTurning180())
         {
             transform.rotation = Quaternion.Lerp(transform.rotation, player.RotationTowards(), angularSpeed * Time.deltaTime);
         }

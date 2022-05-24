@@ -1071,6 +1071,7 @@ GameObject:
   - component: {fileID: 3727991495068297801}
   - component: {fileID: 957758512083713342}
   - component: {fileID: 6751131241172855838}
+  - component: {fileID: 2126161015}
   m_Layer: 0
   m_Name: Nightshade J Friedrich
   m_TagString: Untagged
@@ -1172,6 +1173,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 184222285813254807}
+--- !u!195 &2126161015
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4034525403097091069}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &4117355280905286890
 GameObject:
   m_ObjectHideFlags: 0
