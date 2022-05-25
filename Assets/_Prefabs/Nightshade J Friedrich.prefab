@@ -1072,6 +1072,7 @@ GameObject:
   - component: {fileID: 957758512083713342}
   - component: {fileID: 6751131241172855838}
   - component: {fileID: 2126161015}
+  - component: {fileID: 5444968106571165828}
   m_Layer: 0
   m_Name: Nightshade J Friedrich
   m_TagString: Untagged
@@ -1160,6 +1161,10 @@ MonoBehaviour:
   PlayerInput: {fileID: 0}
   zeroVector: {x: 0, y: 0}
   moveVector: {x: 0, y: 0}
+  spellCount: 2
+  spellCasted: 0000
+  mouse: 0000
+  currentBattlefield: {fileID: 0}
 --- !u!114 &6751131241172855838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1196,6 +1201,20 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &5444968106571165828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4034525403097091069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f00e84ec361d7524abc8b492aba08ba1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spellContext: {fileID: 11400000, guid: de4b76274abdd8241821f1dd50903093, type: 2}
+  target: {fileID: 0}
 --- !u!1 &4117355280905286890
 GameObject:
   m_ObjectHideFlags: 0

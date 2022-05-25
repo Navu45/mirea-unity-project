@@ -10,7 +10,11 @@ public class Player : MonoBehaviour
 
     public Vector2 zeroVector = Vector3.zero;
     public Vector2 moveVector = Vector3.zero;
+    public int spellCount = 2;
+    public bool[] spellCasted = new bool[] { false, false };
+    public bool[] mouse = new bool[] { false, false };
 
+    public TargetController currentBattlefield;
     void Start()
     {
         PlayerInput = GetComponent<PlayerInput>();
@@ -24,7 +28,15 @@ public class Player : MonoBehaviour
     public Vector2 InputVector {
         get => moveVector;
     }
-    public void InitInputForFrame() => moveVector = PlayerInput.actions["Move"].ReadValue<Vector2>();
+    public void InitInputForFrame() 
+    {
+        moveVector = PlayerInput.actions["Move"].ReadValue<Vector2>();
+        spellCasted[0] = Keyboard.current.digit1Key.ReadValue() == 1;
+        spellCasted[1] = Keyboard.current.digit1Key.ReadValue() == 1;
+        mouse[0] = Mouse.current.leftButton.ReadValue() == 1;
+        mouse[0] = Mouse.current.rightButton.ReadValue() == 1;
+    }
+
     public Vector3 MoveDirection => transform.forward * InputVector.y + transform.right * InputVector.x;
     public bool IsTurning180() =>  InputVector != zeroVector && Quaternion.Angle(transform.rotation, RotationTowards()) == 180;    
     public Quaternion RotationTowards() => Quaternion.LookRotation(MoveDirection);
