@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Cinemachine;
 
 [RequireComponent(typeof(PlayerInput))]
+[RequireComponent(typeof(PlayerStats))]
 public class Player : MonoBehaviour
 {
-    [HideInInspector] public PlayerInput PlayerInput;
-
+    [HideInInspector] public PlayerInput playerInput;
+    [HideInInspector] public PlayerStats playerStats;
     public Vector2 zeroVector = Vector3.zero;
     public Vector2 moveVector = Vector3.zero;
     public int spellCount = 2;
@@ -17,9 +19,10 @@ public class Player : MonoBehaviour
     public TargetController currentBattlefield;
     void Start()
     {
-        PlayerInput = GetComponent<PlayerInput>();
+        playerInput = GetComponent<PlayerInput>();
+        playerStats = GetComponent<PlayerStats>();
     }
-    
+
     void Update()
     {
         InitInputForFrame();
@@ -30,9 +33,9 @@ public class Player : MonoBehaviour
     }
     public void InitInputForFrame() 
     {
-        moveVector = PlayerInput.actions["Move"].ReadValue<Vector2>();
+        moveVector = playerInput.actions["Move"].ReadValue<Vector2>();
         spellCasted[0] = Keyboard.current.digit1Key.ReadValue() == 1;
-        spellCasted[1] = Keyboard.current.digit1Key.ReadValue() == 1;
+        spellCasted[1] = Keyboard.current.digit2Key.ReadValue() == 1;
         mouse[0] = Mouse.current.leftButton.ReadValue() == 1;
         mouse[0] = Mouse.current.rightButton.ReadValue() == 1;
     }

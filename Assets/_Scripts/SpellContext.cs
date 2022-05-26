@@ -9,9 +9,19 @@ public class SpellContext : ScriptableObject
 }
 
 [System.Serializable]
-public class Spell
+public struct Spell
 {
     public GameObject prefab;
-    public bool ableToCastRunning;
-    public float delayTime;
+    public int cost;
+    public Target target;
+    public Target spawnPoint;
+    public float duration;
+    public Vector3 localPosition;
+    public Quaternion localRotation;
+}
+public enum Target
+{
+    Player,
+    Enemy,
+    None
 }
