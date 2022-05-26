@@ -66,3 +66,9 @@ crashlytics-build.properties
 Assets/SampleSceneAssets/
 
 Assets/Samples/
+
+Assets/Scenes/Level1.rar.meta
+
+*.rar
+
+Assets/Erbeilo3D/
