@@ -24,4 +24,9 @@ public class TargetController : MonoBehaviour
             }
         }
     }
+
+    public Enemy GetRandomEnemy()
+    {
+        return enemies[Random.Range(0, enemies.Length)];
+    }
 }

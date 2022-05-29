@@ -8,17 +8,22 @@ using Cinemachine;
 [RequireComponent(typeof(PlayerStats))]
 public class Player : MonoBehaviour
 {
+    [Header("Abilities")]
     [HideInInspector] public PlayerInput playerInput;
     [HideInInspector] public PlayerStats playerStats;
+    public Enemy target;
     public SpellContext spellContext;
+    public readonly string[] spellNames = { "Lightning", "Electricity" };
+    public TargetController currentBattlefield;
+
+    [Header("Input")]
     public Vector2 zeroVector = Vector3.zero;
     public Vector2 moveVector = Vector3.zero;
     public int spellCount = 2;
     public bool[] spellCasted = { false, false };
-    public readonly string[] spellNames = { "Lightning", "Electricity" };
     public bool[] mouse = new bool[] { false, false };
+    public LayerMask enemyVolumeMask;
 
-    public TargetController currentBattlefield;
     void Start()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -44,7 +49,19 @@ public class Player : MonoBehaviour
 
     public Vector3 MoveDirection => transform.forward * InputVector.y + transform.right * InputVector.x;
     public bool IsTurning180() =>  InputVector != zeroVector && Quaternion.Angle(transform.rotation, RotationTowards()) == 180;    
-    public Quaternion RotationTowards() => Quaternion.LookRotation(MoveDirection);
+    public Quaternion RotationTowards() => Quaternion.LookRotation(Mathf.Sign(InputVector.y) * MoveDirection);
     public bool IsMoving() => InputVector.y != 0;
     public bool IsInputEmpty() => InputVector == zeroVector;
+    public bool TryGetTarget(Spell spellInfo)
+    {
+        Ray ray = new Ray(transform.position + Vector3.up, transform.TransformDirection(Vector3.forward));
+        if (Physics.Raycast(ray, out RaycastHit hit, spellInfo.distance, enemyVolumeMask))
+        {
+            if (hit.transform.TryGetComponent(out TargetController targets))
+            {
+                return target = targets.GetRandomEnemy();
+            }
+        }
+        return target = null;
+    }
 }

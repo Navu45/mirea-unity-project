@@ -10,17 +10,12 @@ public class PlayerMoveController : MonoBehaviour
     public float angularSpeed = 2;
 
     private Player player;
-    private IDisposable movement;
+    private IDisposable stopMovement;
     private IDisposable spellCasting;
 
     void Start()
     {
         player = GetComponent<Player>();
-    }
-
-    public void SetSpeed(AnimType animType)
-    {
-        animator.SetFloat("Speed", (float) animType);
     }
 
     public void RotateWithAnimation(float value)
@@ -48,7 +43,8 @@ public class PlayerMoveController : MonoBehaviour
             if (player.spellCasted[i] && spellCasting == null)
             {
                 SpellAnimation(player.spellNames[i]);
-                spellCasting = Observable.Timer(TimeSpan.FromSeconds(player.spellContext.spells[i].duration))
+                Spell spellInfo = player.spellContext.spells[i];
+                spellCasting = Observable.Timer(TimeSpan.FromSeconds(spellInfo.ReloadTime))
                     .Subscribe(_ =>
                     {
                         spellCasting?.Dispose();
@@ -60,20 +56,21 @@ public class PlayerMoveController : MonoBehaviour
 
     private void MoveForward()
     {
-        if (player.IsInputEmpty() && animator.GetFloat("Speed") != 0)
+        if (player.IsInputEmpty() && stopMovement == null)
         {
-            movement = Observable.Timer(TimeSpan.FromSeconds(0.1f)).Subscribe(_ => SetSpeed(AnimType.Idle));
+            stopMovement = Observable.Timer(TimeSpan.FromSeconds(0.1f)).Subscribe(_ => animator.SetFloat("Speed", 0));
         }
-        else if (player.IsMoving() || animator.GetFloat("Speed") != 0 && player.InputVector.x != 0)
+        else if (player.IsMoving() || stopMovement != null && player.InputVector.x != 0)
         {
-            movement?.Dispose();
-            SetSpeed(AnimType.Run);
+            stopMovement?.Dispose();
+            stopMovement = null;
+            animator.SetFloat("Speed", player.InputVector.y);
         }
     }
 
     private void RotateWithVector()
     {
-        if (animator.GetFloat("Speed") == 2 && player.InputVector.x != 0 || !player.IsInputEmpty() && !player.IsTurning180())
+        if (player.InputVector.x != 0)
         {
             transform.rotation = Quaternion.Lerp(transform.rotation, player.RotationTowards(), angularSpeed * Time.deltaTime);
         }
@@ -81,11 +78,7 @@ public class PlayerMoveController : MonoBehaviour
 
     private void TurnPlayerWithAnim()
     {
-        if (player.InputVector.y != 0 && player.IsTurning180())
-        {
-            RotateWithAnimation(180);
-        }
-        else
+        if (player.InputVector.y == 0)
         {
             RotateWithAnimation(player.InputVector.x * 90);
         }

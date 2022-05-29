@@ -18,7 +18,7 @@ public class PlayerStats : MonoBehaviour
             return false;
         }
 
-        manaConsume = Observable.Interval(TimeSpan.FromSeconds(1)).Timeout(TimeSpan.FromSeconds(duration)).Subscribe(m =>
+        manaConsume = Observable.Interval(TimeSpan.FromSeconds(1)).Subscribe(m =>
         {            
             mana -= cost;
         });

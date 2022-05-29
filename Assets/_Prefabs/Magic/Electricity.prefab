@@ -49,7 +49,7 @@ VisualEffect:
   m_PropertySheet:
     m_Float:
       m_Array:
-      - m_Value: 0.95
+      - m_Value: 0.3
         m_Name: ArcCone_arc
         m_Overridden: 1
       - m_Value: 40.74

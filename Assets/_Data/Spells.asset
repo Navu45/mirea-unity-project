@@ -15,17 +15,23 @@ MonoBehaviour:
   spells:
   - prefab: {fileID: 2965110423678476791, guid: d8bd09e042584f246ac8bfb493edf4ee, type: 3}
     cost: 0
+    startDelay: 0
+    duration: 0.4
+    destroyDelay: 0.3
+    continuous: 0
+    distance: 10
     target: 1
     spawnPoint: 1
-    delay: 0
-    duration: 1
-    localPosition: {x: 0, y: 0, z: 0}
+    localPosition: {x: 0, y: 1, z: 0}
     localRotation: {x: 0, y: 0, z: 0, w: 0}
   - prefab: {fileID: 6240640649079003562, guid: e15d25604bf0f0348afcac3c10abea8e, type: 3}
     cost: 0
+    startDelay: 1
+    duration: 1.5
+    destroyDelay: 0.3
+    continuous: 1
+    distance: 4
     target: 0
     spawnPoint: 0
-    delay: 1
-    duration: 1.5
     localPosition: {x: 0, y: 0.322, z: 1}
-    localRotation: {x: 0, y: 0.9659258, z: 0, w: 0.25881907}
+    localRotation: {x: 0, y: 0.9961947, z: 0, w: 0.087155804}

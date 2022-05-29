@@ -13,13 +13,17 @@ public struct Spell
 {
     public GameObject prefab;
     public int cost;
+    public float startDelay;
+    public float duration;
+    public float destroyDelay;
+    public bool continuous;
+    public float distance;
     public Target target;
     public Target spawnPoint;
-    public float delay;
-    public float duration;
-    public float distance;
     public Vector3 localPosition;
     public Quaternion localRotation;
+
+    public float ReloadTime => startDelay + duration + destroyDelay;
 }
 public enum Target
 {
