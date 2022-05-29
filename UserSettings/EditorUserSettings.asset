@@ -33,6 +33,15 @@ EditorUserSettings:
       value: 22424703114646680e0b0227036c731500121478623d28393930
       flags: 0
     RecentlyUsedScenePath-3:
+      value: 22424703114646680e0b0227036c721f03190c2b252615332827187df7ee3d2cfb
+      flags: 0
+    RecentlyUsedScenePath-4:
+      value: 22424703114646680e0b0227036c721f03190c2b252615332827187df7ee3d2cfb
+      flags: 0
+    RecentlyUsedScenePath-5:
+      value: 224247031146467e1f0c092b1c2c0c3459241b2f222d357f0026083df6e13d36d1e433e7e2742a323016f6
+      flags: 0
+    RecentlyUsedScenePath-6:
       value: 22424703114646680e0b0227036c73150012147b623d28393930
       flags: 0
     UnityEditor.ShaderGraph.Blackboard:
@@ -55,13 +64,9 @@ EditorUserSettings:
   m_VCDebugCmd: 0
   m_VCDebugOut: 0
   m_SemanticMergeMode: 2
-  m_DesiredImportWorkerCount: 3
-  m_StandbyImportWorkerCount: 2
-  m_IdleImportWorkerShutdownDelay: 60000
   m_VCShowFailedCheckout: 1
   m_VCOverwriteFailedCheckoutAssets: 1
   m_VCProjectOverlayIcons: 1
   m_VCHierarchyOverlayIcons: 1
   m_VCOtherOverlayIcons: 1
   m_VCAllowAsyncUpdate: 1
-  m_ArtifactGarbageCollection: 1

@@ -1158,7 +1158,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 657ef554a14f629429a149713f4b951d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerInput: {fileID: 0}
+  playerInput: {fileID: 0}
+  playerStats: {fileID: 0}
+  spellContext: {fileID: 11400000, guid: de4b76274abdd8241821f1dd50903093, type: 2}
   zeroVector: {x: 0, y: 0}
   moveVector: {x: 0, y: 0}
   spellCount: 2
@@ -1213,7 +1215,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f00e84ec361d7524abc8b492aba08ba1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spellContext: {fileID: 11400000, guid: de4b76274abdd8241821f1dd50903093, type: 2}
   target: {fileID: 0}
 --- !u!1 &4117355280905286890
 GameObject:
