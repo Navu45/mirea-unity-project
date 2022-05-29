@@ -10,10 +10,12 @@ public class Player : MonoBehaviour
 {
     [HideInInspector] public PlayerInput playerInput;
     [HideInInspector] public PlayerStats playerStats;
+    public SpellContext spellContext;
     public Vector2 zeroVector = Vector3.zero;
     public Vector2 moveVector = Vector3.zero;
     public int spellCount = 2;
-    public bool[] spellCasted = new bool[] { false, false };
+    public bool[] spellCasted = { false, false };
+    public readonly string[] spellNames = { "Lightning", "Electricity" };
     public bool[] mouse = new bool[] { false, false };
 
     public TargetController currentBattlefield;

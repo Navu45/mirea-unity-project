@@ -15,7 +15,9 @@ public struct Spell
     public int cost;
     public Target target;
     public Target spawnPoint;
+    public float delay;
     public float duration;
+    public float distance;
     public Vector3 localPosition;
     public Quaternion localRotation;
 }

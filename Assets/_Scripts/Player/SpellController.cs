@@ -7,9 +7,9 @@ using UnityEngine.VFX;
 
 public class SpellController : MonoBehaviour
 {
-    public SpellContext spellContext;
     private Player player;
     private VisualEffect spell;
+    private IDisposable spellDelay;
     private IDisposable spellDuration;
     public Transform target;
 
@@ -22,43 +22,56 @@ public class SpellController : MonoBehaviour
     {
         for (int i = 0; i < 2; i++)
         {
-            if (player.spellCasted[i] && spellDuration == null)
+            if (player.spellCasted[i] && spellDuration == null && spellDelay == null)
             {
-                Spell spellInfo = spellContext.spells[i];
+                Spell spellInfo = player.spellContext.spells[i];
                 if (player.playerStats.TryDecreaseManaLevel(spellInfo.cost, spellInfo.duration))
                 {
-                    spell = Instantiate(spellInfo.prefab).GetComponent<VisualEffect>();
                     CastSpell(spellInfo);
                     SetReloadTimer(spellInfo);
                     break;
-                }                
+                }
+
+                // Bit shift the index of the layer (8) to get a bit mask
+                int layerMask = 1 << 8;
+
+                RaycastHit hit;
+                // Does the ray intersect any objects excluding the player layer
+                if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, spellInfo.distance, layerMask))
+                {
+                    Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
+                    Debug.Log("Did Hit");
+                }
+                else
+                {
+                    Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white);
+                    Debug.Log("Did not Hit");
+                }
             }
         }
     }
 
     private void SetReloadTimer(Spell spellInfo)
     {
-        if (spellDuration == null)
-        {
-            spellDuration = Observable.Timer(TimeSpan.FromSeconds(spellInfo.duration))
+        spellDuration = Observable.Timer(TimeSpan.FromSeconds(spellInfo.duration + spellInfo.delay))
             .TakeUntilDisable(gameObject).Subscribe(_ =>
             {
                 spell.Stop();
-                spellDuration.Dispose();
+                spellDuration?.Dispose();
                 spellDuration = null;
             });
-        }
     }
 
     private void CastSpell(Spell spellInfo)
     {
-        PlaceVFX(spellInfo);
-    }
-
-    private void PlaceVFX(Spell spellInfo)
-    {
-        spell.transform.parent = spellInfo.target == Target.Enemy ? target : spellInfo.target == Target.Player ? transform : null;
-        spell.transform.localPosition = spellInfo.localPosition;
-        spell.transform.localRotation = spellInfo.localRotation;
+        spellDelay = Observable.Timer(TimeSpan.FromSeconds(spellInfo.delay)).Subscribe(_ =>
+        {
+            spell = Instantiate(spellInfo.prefab).GetComponent<VisualEffect>();
+            spell.transform.parent = spellInfo.target == Target.Enemy ? target : spellInfo.target == Target.Player ? transform : null;
+            spell.transform.localPosition = spellInfo.localPosition;
+            spell.transform.localRotation = spellInfo.localRotation;
+            spellDelay.Dispose();
+            spellDelay = null;
+        });
     }
 }
