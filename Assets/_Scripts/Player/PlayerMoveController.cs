@@ -71,7 +71,7 @@ public class PlayerMoveController : MonoBehaviour
     {
         if (player.InputVector.x != 0)
         {
-            //transform.rotation = Quaternion.Lerp(transform.rotation, player.RotationTowards(), angularSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, player.RotationTowards(), angularSpeed * Time.deltaTime);
         }
     }
 
