@@ -30,9 +30,9 @@ public class PlayerMoveController : MonoBehaviour
 
     private void Update()
     {
-        TurnPlayerWithAnim();
         MoveForward();
         RotateWithVector();
+        TurnPlayerWithAnim();
         CastSpell();
     }
 
@@ -43,8 +43,7 @@ public class PlayerMoveController : MonoBehaviour
             if (player.spellCasted[i] && spellCasting == null)
             {
                 SpellAnimation(player.spellNames[i]);
-                Spell spellInfo = player.spellContext.spells[i];
-                spellCasting = Observable.Timer(TimeSpan.FromSeconds(spellInfo.ReloadTime))
+                spellCasting = Observable.Timer(TimeSpan.FromSeconds(player.spellContext.spells[i].ReloadTime))
                     .Subscribe(_ =>
                     {
                         spellCasting?.Dispose();
@@ -60,7 +59,7 @@ public class PlayerMoveController : MonoBehaviour
         {
             stopMovement = Observable.Timer(TimeSpan.FromSeconds(0.1f)).Subscribe(_ => animator.SetFloat("Speed", 0));
         }
-        else if (player.IsMoving() || stopMovement != null && player.InputVector.x != 0)
+        else if (player.IsMoving())
         {
             stopMovement?.Dispose();
             stopMovement = null;
@@ -72,7 +71,7 @@ public class PlayerMoveController : MonoBehaviour
     {
         if (player.InputVector.x != 0)
         {
-            transform.rotation = Quaternion.Lerp(transform.rotation, player.RotationTowards(), angularSpeed * Time.deltaTime);
+            //transform.rotation = Quaternion.Lerp(transform.rotation, player.RotationTowards(), angularSpeed * Time.deltaTime);
         }
     }
 

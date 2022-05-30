@@ -31,7 +31,7 @@ MonoBehaviour:
     destroyDelay: 0.3
     continuous: 1
     distance: 4
-    target: 0
+    target: 2
     spawnPoint: 0
     localPosition: {x: 0, y: 0.322, z: 1}
     localRotation: {x: 0, y: 0.9961947, z: 0, w: 0.087155804}

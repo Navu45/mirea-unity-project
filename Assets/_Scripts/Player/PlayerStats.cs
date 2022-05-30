@@ -4,27 +4,24 @@ using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 
-public class PlayerStats : MonoBehaviour
+public class PlayerStats : UnitStats
 {
-    [field: SerializeField] public int health { get; private set; } = 100;
-    [field: SerializeField] public int mana { get; private set; } = 100;
-
-    IDisposable manaConsume;
+    [field: SerializeField] public int Mana { get; private set; } = 100;
 
     public bool TryDecreaseManaLevel(int cost, float duration)
     {
-        if (mana - cost < 0)
+        if (Mana - cost < 0)
         {
             return false;
         }
 
-        manaConsume = Observable.Interval(TimeSpan.FromSeconds(1)).Subscribe(m =>
-        {            
-            mana -= cost;
-        });
+        Observable.Interval(TimeSpan.FromSeconds(1))
+            .TakeUntil(Observable.Timer(TimeSpan.FromSeconds(duration)))
+            .Subscribe(m =>
+            {
+                Mana -= cost;
+            });
+
         return true;
     }
-
-    //[field: SerializeField] public ProgressBar mana { get; }    
-    //[field: SerializeField] public ProgressBar mana { get; }
 }

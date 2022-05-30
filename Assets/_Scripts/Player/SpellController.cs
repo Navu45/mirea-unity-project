@@ -25,7 +25,7 @@ public class SpellController : MonoBehaviour
             if (player.spellCasted[i] && spellDuration == null && spellDelay == null)
             {
                 spellInfo = player.spellContext.spells[i];
-                if (player.playerStats.TryDecreaseManaLevel(spellInfo.cost, spellInfo.duration))
+                if (player.TryGetTarget(spellInfo) && player.playerStats.TryDecreaseManaLevel(spellInfo.cost, spellInfo.duration))
                 {
                     CastSpell(spellInfo);
                     SetReloadTimer(spellInfo);
@@ -41,32 +41,22 @@ public class SpellController : MonoBehaviour
             .TakeUntilDisable(gameObject)
             .Subscribe(_ =>
             {
-                Debug.Log("Here1");
-                if (spell)
+                spell.Stop();
+                Observable.Timer(TimeSpan.FromSeconds(spellInfo.destroyDelay)).Subscribe(_ =>
                 {
-                    spell.Stop();
-                    Observable.Timer(TimeSpan.FromSeconds(spellInfo.destroyDelay)).Subscribe(_ =>
-                    {
-                        Destroy(spell.gameObject);
-                        spellDuration?.Dispose();
-                        spellDuration = null;
-                    });
-                }                
+                    Destroy(spell.gameObject);
+                    spellDuration?.Dispose();
+                    spellDuration = null;
+                });
             });
     }
 
     private void CastSpell(Spell spellInfo)
-    {
-        if (spellInfo.target != Target.Player && !player.TryGetTarget(spellInfo))
-        {
-            Debug.Log("Here");
-            return;
-        }
-
+    {      
         spellDelay = Observable.Timer(TimeSpan.FromSeconds(spellInfo.startDelay)).Subscribe(_ =>
         {
             spell = Instantiate(spellInfo.prefab).GetComponent<VisualEffect>();
-            spell.transform.parent = spellInfo.target == Target.Enemy ? player.target.transform : spellInfo.target == Target.Player ? transform : null;
+            spell.transform.parent = player.target ? player.target.transform : transform;
             spell.transform.localPosition = spellInfo.localPosition;
             spell.transform.localRotation = spellInfo.localRotation;
             spellDelay?.Dispose();
