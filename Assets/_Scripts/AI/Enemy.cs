@@ -49,7 +49,10 @@ public class Enemy : Unit
 
     public override void SetTarget(Unit target)
     {
-        this.target = target;
+        if (NoHP)
+        {
+            return;
+        }
 
         if (chaseTarget != null)
         {
@@ -57,12 +60,14 @@ public class Enemy : Unit
             chaseTarget = null;
         }
 
+        this.target = target;
         chaseTarget = Observable.EveryUpdate()
             .TakeWhile(_ => target != null)
             .TakeWhile(_ => !NoHP)
             .Finally(() => {
 
                 chaseTarget = null;
+                chaseTarget?.Dispose();
                 if (NoHP)
                 {
                     Die();

@@ -11,7 +11,8 @@
                     "id": "d56bdc70-5149-4d88-b9d3-ab1ac1ea867f",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Jump",
@@ -19,7 +20,8 @@
                     "id": "47f23158-d6b7-4f76-862b-fada6acb224e",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Tap(duration=0.08,pressPoint=0.5)"
+                    "interactions": "Tap(duration=0.08,pressPoint=0.5)",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Rotation",
@@ -27,7 +29,17 @@
                     "id": "c32cd427-15e5-43da-97db-b3aea2459867",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "319a0181-b80a-4caf-b929-08dfb0e53504",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -116,6 +128,17 @@
                     "processors": "InvertVector2",
                     "groups": "",
                     "action": "Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9fd1c04c-5be2-48d9-a291-2a5a711998ba",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -22,6 +22,6 @@ public class Battlefield : MonoBehaviour
 
     private void Start()
     {
-        enemyCount += GetComponent<TargetController>().enemies.Length;
+        EnemyCount += GetComponent<TargetController>().enemies.Length;
     }
 }
