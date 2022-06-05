@@ -1267,6 +1267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <health>k__BackingField: 100
   mana: 100
+  RecoverySpeed: 1
   healthBar: {fileID: 0}
   manaBar: {fileID: 0}
 --- !u!1 &4117355280905286890

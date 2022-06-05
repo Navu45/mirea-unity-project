@@ -55,13 +55,8 @@ public class SpellController : MonoBehaviour
     {
         spellDelay = Observable.Timer(TimeSpan.FromSeconds(spellInfo.startDelay))
             .Finally(() =>
-            {                
-                Observable.Interval(TimeSpan.FromSeconds(.1f))
-                .TakeUntil(Observable.Timer(TimeSpan.FromSeconds(spellInfo.duration)))
-                .TakeWhile(_ => player.target && !player.target.NoHP).Subscribe(_ =>
-                {
-                    player.MakeDamage(spellInfo.damage / 10);
-                });
+            {
+                CauseTargetDamage(spellInfo);
             })
             .Subscribe(_ =>
             {
@@ -72,5 +67,28 @@ public class SpellController : MonoBehaviour
                 spellDelay?.Dispose();
                 spellDelay = null;
             });
+    }
+
+    private void CauseTargetDamage(Spell spellInfo)
+    {
+        IObservable<long> observable = null;
+        float interval;
+        if (spellInfo.continuous)
+        {
+            observable = Observable.Interval(TimeSpan.FromSeconds(.1f))
+                        .TakeUntil(Observable.Timer(TimeSpan.FromSeconds(spellInfo.duration)));
+            interval = 10;
+        }
+        else
+        {
+            observable = Observable.Timer(TimeSpan.FromSeconds(spellInfo.startDelay));
+            interval = 1;
+        }
+        
+        observable.TakeWhile(_ => player.target && !player.target.NoHP).Subscribe(_ =>
+        {
+            player.MakeDamage(spellInfo.damage / interval);
+        });
+
     }
 }

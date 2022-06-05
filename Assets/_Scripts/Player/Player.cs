@@ -24,7 +24,7 @@ public class Player : Unit
     public bool[] mouse = new bool[] { false, false };
     public LayerMask enemyVolumeMask;
 
-    public bool TryDecreaseManaLevel(int cost, float duration)
+    public bool TryDecreaseManaLevel(float cost, float duration)
     {
         if ((stats as PlayerStats).Mana - cost < 0)
         {
@@ -81,14 +81,16 @@ public class Player : Unit
         {
             if (currentBattlefield)
             {
-                return target = currentBattlefield.GetRandomEnemy();
+                target = currentBattlefield.GetRandomEnemy();
+                return target.NoHP ? target = null : target;
             }
-            Ray ray = new Ray(transform.position + Vector3.up, transform.TransformDirection(Vector3.forward));
+            Ray ray = new Ray(transform.position + Vector3.up * 2, transform.TransformDirection(Vector3.forward));
             if (Physics.Raycast(ray, out RaycastHit hit, spellInfo.distance, enemyVolumeMask))
             {
                 if (hit.transform.TryGetComponent(out TargetController targets))
                 {
-                    return target = targets.GetRandomEnemy();
+                    target = targets.GetRandomEnemy();
+                    return target.NoHP ? target = null : target;
                 }
             }
         }
@@ -100,5 +102,5 @@ public class Player : Unit
         return target = null;
     }
 
-    protected override void SetTarget(Unit target) {}
+    public override void SetTarget(Unit target) {}
 }

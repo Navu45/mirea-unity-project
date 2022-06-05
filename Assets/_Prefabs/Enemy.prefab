@@ -49,9 +49,10 @@ MonoBehaviour:
   target: {fileID: 0}
   stats: {fileID: 0}
   <NoHP>k__BackingField: 0
-  <Damage>k__BackingField: 5
+  <Damage>k__BackingField: 15
   animator: {fileID: 5249896615614434635}
   attackTime: 2.65
+  attackDistance: 3
 --- !u!114 &1817467809896983017
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,8 +12,11 @@ public class Enemy : Unit
     {
         get; protected set;
     }
+
     [SerializeField] private Animator animator;
+    [Header("Attack")]
     [SerializeField] private float attackTime;
+    [SerializeField] private int attackDistance;
 
     private NavMeshAgent agent;
     private Vector3 startPosition;
@@ -25,7 +28,7 @@ public class Enemy : Unit
         base.Start();
         startPosition = transform.position;
         agent = GetComponent<NavMeshAgent>();
-        agent.stoppingDistance = 3;
+        agent.stoppingDistance = attackDistance;
     }
 
     public void Return()
@@ -44,7 +47,7 @@ public class Enemy : Unit
         animator.SetInteger("Run", speed);
     }
 
-    protected override void SetTarget(Unit target)
+    public override void SetTarget(Unit target)
     {
         this.target = target;
 
@@ -63,15 +66,16 @@ public class Enemy : Unit
                 if (NoHP)
                 {
                     Die();
+                    target.target = null;
                 }
             })
             .Subscribe(_ =>
             {
                 agent.destination = target.transform.position;
-                if (agent.remainingDistance > 4)
+                transform.LookAt(target.transform);
+                if (agent.remainingDistance > attackDistance)
                 {
                     ChaseTarget();
-
                 }
                 else
                 {
@@ -84,6 +88,7 @@ public class Enemy : Unit
     {
         agent.ResetPath();
         animator.SetTrigger("Death");
+        Battlefield.EnemyCount--;
     }
 
     private void ChaseTarget()
@@ -94,15 +99,14 @@ public class Enemy : Unit
 
     private void AttackTarget()
     {
+        SetSpeed(0);
+        Fight();
         if (fight == null)
         {
-            SetSpeed(0);
-            Fight();
-            fight = Observable.Interval(TimeSpan.FromSeconds(attackTime))
+            fight = Observable.Interval(TimeSpan.FromSeconds(attackTime - .5f))
                 .Finally(() => fight = null)
-                .TakeWhile(_ => !NoHP && agent.remainingDistance > 4).Subscribe(_ =>
+                .TakeWhile(_ => !NoHP && agent.remainingDistance <= attackDistance).Subscribe(_ =>
                 {
-                    transform.LookAt(target.transform);
                     MakeDamage(Damage);
                 });
         }

@@ -11,6 +11,11 @@ public class TargetController : MonoBehaviour
         if (other.TryGetComponent(out Player player))
         {
             player.currentBattlefield = this;
+            
+            foreach (Enemy enemy in enemies)
+            {
+                enemy.SetTarget(player);
+            }
         }
     }
 

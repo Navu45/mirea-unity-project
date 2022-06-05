@@ -7,17 +7,24 @@ using UnityEngine.Events;
 
 public class UnitStats : MonoBehaviour
 {
-    [field: SerializeField] public int health { get; private set; } = 100;
+    public float health = 100f;
 
-    protected UnityAction OnTakeDamage;
-    public int Health
+    protected IDisposable waitForRegeneration;
+
+    public virtual float Health
     {
         get => health; set {
-            health = Mathf.Clamp(value, 0, 100);
-            OnTakeDamage?.Invoke();
+            health = Mathf.Clamp(value, 0.0f, 100.0f);
+            if (waitForRegeneration != null)
+            {
+                waitForRegeneration.Dispose();
+                waitForRegeneration = null;
+            }
+            waitForRegeneration = Observable.Timer(TimeSpan.FromSeconds(3))
+                   .Finally(() => waitForRegeneration = null)
+                   .Subscribe(_ => Regenerate());
         }
     }
 
-    //[field: SerializeField] public ProgressBar mana { get; }    
-    //[field: SerializeField] public ProgressBar mana { get; }
+    protected virtual void Regenerate() { }
 }

@@ -7,7 +7,7 @@ public class ManaBar : MonoBehaviour
 {
     public Slider manaBar;
 
-    public void SetMana(int hp)
+    public void SetMana(float hp)
     {
         manaBar.value = hp;
     }

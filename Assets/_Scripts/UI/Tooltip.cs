@@ -16,7 +16,6 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         
     }
 
-    //Detect when Cursor leaves the GameObject
     public void OnPointerExit(PointerEventData pointerEventData)
     {
         tooltipText.gameObject.SetActive(false);

@@ -14,12 +14,12 @@ public abstract class Unit : MonoBehaviour
         get; protected set;
     }
 
-    public void TakeDamage(int damage) {
+    public void TakeDamage(float damage) {
         stats.Health -= damage;
         NoHP = stats.Health == 0;
     }
 
-    public void MakeDamage(int damage)
+    public void MakeDamage(float damage)
     {
         if (target)
         {
@@ -28,7 +28,7 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
-    protected abstract void SetTarget(Unit target);
+    public abstract void SetTarget(Unit target);
 
     protected virtual void Start()
     {

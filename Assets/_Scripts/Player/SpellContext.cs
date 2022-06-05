@@ -12,8 +12,8 @@ public class SpellContext : ScriptableObject
 public struct Spell
 {
     public GameObject prefab;
-    public int cost;
-    public int damage;
+    public float cost;
+    public float damage;
     public float startDelay;
     public float duration;
     public float destroyDelay;
