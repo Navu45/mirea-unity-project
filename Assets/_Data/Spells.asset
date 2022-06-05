@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spells:
   - prefab: {fileID: 2965110423678476791, guid: d8bd09e042584f246ac8bfb493edf4ee, type: 3}
-    cost: 0
-    startDelay: 0
+    cost: 25
+    damage: 30
+    startDelay: 0.5
     duration: 0.4
     destroyDelay: 0.3
     continuous: 0
@@ -25,7 +26,8 @@ MonoBehaviour:
     localPosition: {x: 0, y: 1, z: 0}
     localRotation: {x: 0, y: 0, z: 0, w: 0}
   - prefab: {fileID: 6240640649079003562, guid: e15d25604bf0f0348afcac3c10abea8e, type: 3}
-    cost: 0
+    cost: 10
+    damage: 0
     startDelay: 1
     duration: 1.5
     destroyDelay: 0.3

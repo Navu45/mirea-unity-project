@@ -1161,9 +1161,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 657ef554a14f629429a149713f4b951d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInput: {fileID: 0}
-  playerStats: {fileID: 0}
   target: {fileID: 0}
+  stats: {fileID: 0}
+  <NoHP>k__BackingField: 0
+  playerInput: {fileID: 0}
   spellContext: {fileID: 11400000, guid: de4b76274abdd8241821f1dd50903093, type: 2}
   currentBattlefield: {fileID: 0}
   zeroVector: {x: 0, y: 0}
@@ -1264,8 +1265,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9124f83c7b87b3c43b3aa1c44e808579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Health>k__BackingField: 100
-  <Mana>k__BackingField: 100
+  <health>k__BackingField: 100
+  mana: 100
+  healthBar: {fileID: 0}
+  manaBar: {fileID: 0}
 --- !u!1 &4117355280905286890
 GameObject:
   m_ObjectHideFlags: 0

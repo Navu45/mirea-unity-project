@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
+using System;
+using UniRx;
 
 [RequireComponent(typeof(PlayerInput))]
-public class Player : MonoBehaviour
+public class Player : Unit
 {
     [Header("Abilities")]
     [HideInInspector] public PlayerInput playerInput;
-    [HideInInspector] public PlayerStats playerStats;
 
-    public Enemy target;
     public SpellContext spellContext;
     public readonly string[] spellNames = { "Lightning", "Electricity" };
     public TargetController currentBattlefield;
@@ -24,10 +24,28 @@ public class Player : MonoBehaviour
     public bool[] mouse = new bool[] { false, false };
     public LayerMask enemyVolumeMask;
 
-    void Start()
+    public bool TryDecreaseManaLevel(int cost, float duration)
     {
+        if ((stats as PlayerStats).Mana - cost < 0)
+        {
+            return false;
+        }
+
+        Observable.Interval(TimeSpan.FromSeconds(.1f))
+            .TakeUntil(Observable.Timer(TimeSpan.FromSeconds(duration)))
+            .Subscribe(m =>
+            {
+                (stats as PlayerStats).Mana -= cost / 10;
+            });
+
+        return true;
+    }
+
+    public bool SpellCasted(int i) => spellCasted[i] && (spellContext.spells[i].target == Target.None || target != null);
+    protected override void Start()
+    {
+        base.Start();
         playerInput = GetComponent<PlayerInput>();
-        playerStats = GetComponent<PlayerStats>();
     }
 
     void Update()
@@ -54,6 +72,11 @@ public class Player : MonoBehaviour
     public bool IsInputEmpty() => InputVector == zeroVector;
     public bool TryGetTarget(Spell spellInfo)
     {
+        if (target && !target.NoHP)
+        {
+            return true;
+        }
+
         if (spellInfo.target == Target.Enemy)
         {
             if (currentBattlefield)
@@ -64,7 +87,7 @@ public class Player : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit, spellInfo.distance, enemyVolumeMask))
             {
                 if (hit.transform.TryGetComponent(out TargetController targets))
-                {                    
+                {
                     return target = targets.GetRandomEnemy();
                 }
             }
@@ -76,4 +99,6 @@ public class Player : MonoBehaviour
         }
         return target = null;
     }
+
+    protected override void SetTarget(Unit target) {}
 }

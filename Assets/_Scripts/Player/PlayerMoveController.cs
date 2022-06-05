@@ -40,7 +40,7 @@ public class PlayerMoveController : MonoBehaviour
     {
         for (int i = 0; i < player.spellCount; i++)
         {
-            if (player.spellCasted[i] && spellCasting == null)
+            if (player.SpellCasted(i) && spellCasting == null)
             {
                 SpellAnimation(player.spellNames[i]);
                 spellCasting = Observable.Timer(TimeSpan.FromSeconds(player.spellContext.spells[i].ReloadTime))
